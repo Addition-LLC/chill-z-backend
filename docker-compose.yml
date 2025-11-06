@@ -1,26 +1,4 @@
 services:
-#  node_app:
-#    develop:
-#      watch:
-#        - action: sync
-#          path: ./dist
-#          target: /app
-#          ignore:
-#            - node_modules/
-#        - action: rebuild
-#          path: package.json
-#    build: .
-#    ports:
-#      - '9000:9000'
-#    environment:
-#      NODE_ENV: production
-#    volumes:
-#      - .:/app
-#      - /app/node_modules
-#    depends_on:
-#      - postgres
-#      - redis
-
   chillz_backend:
     build:
       context: .
@@ -41,11 +19,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: chillz_db
-      PGDATA: /var/lib/docker/volumes/pgdata/_data
-
+    volumes:
+      - pgdata:/var/lib/postgresql/data 
     networks:
       - postgres-network
-
     ports:
       - '5432:5432'
 
@@ -62,7 +39,6 @@ services:
       - redisinsight-data:/db
     depends_on:
       - redis
-
 
 volumes:
   redisinsight-data:
