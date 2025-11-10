@@ -15,6 +15,7 @@ import {
 } from "resend"
 
 import { orderPlacedEmail } from "./emails/order-placed"
+import { passwordResetEmail } from "./emails/reset-password"
 
 
 type ResendOptions = {
@@ -31,14 +32,14 @@ type InjectedDependencies = {
 }
 
 enum Templates  {
-  PASSWORD_RESET = "password_reset",
+  RESET_PASSWORD = "reset-password",
   ORDER_PLACED = "order-placed",
   SHIPPING_UPDATE = "shipping_update",
   NEWSLETTER = "newsletter"
 }
 
 const templates: {[key in Templates]?: (props: unknown) => React.ReactNode} = {
-  [Templates.PASSWORD_RESET]: () => "<p>Click <a href='{{reset_link}}'>here</a> to reset your password.</p>",
+  [Templates.RESET_PASSWORD]: passwordResetEmail,
   [Templates.ORDER_PLACED]: orderPlacedEmail,
   [Templates.SHIPPING_UPDATE]: () => "<p>Your order {{order_number}} has been shipped. Track it <a href='{{tracking_link}}'>here</a>.</p>",
   [Templates.NEWSLETTER]: () => "<p>Welcome to our newsletter! Stay tuned for updates.</p>",
@@ -91,7 +92,7 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
     }
 
     switch(template){
-      case Templates.PASSWORD_RESET:
+      case Templates.RESET_PASSWORD:
         return "Reset your password"
       case Templates.ORDER_PLACED:
         return "Your order confirmation"
